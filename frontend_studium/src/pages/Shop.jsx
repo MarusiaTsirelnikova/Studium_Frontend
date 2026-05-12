@@ -105,6 +105,14 @@ function Shop() {
         setIsModalOpen(false)
     }
 
+    const technologies = [
+        'Одежда',
+        'Канцелярия',
+        'Учебная литература',
+        'Электроника',
+        'Кружки',
+    ]
+
     return (
         <>
             <div className="mx-62.5 mb-5">
@@ -123,6 +131,16 @@ function Shop() {
                     >
                         Корзина
                     </div>
+                </div>
+                <div className="pb-5 flex gap-2.5 flex-wrap">
+                    {technologies.map((technology, index) => (
+                        <div className="relative block">
+                            <input type="checkbox" name="technology" id={`technology${index}`} className="peer absolute left-0 -z-1 opacity-0 checked:bg-gray-600" />
+                            <label htmlFor={`technology${index}`} className="cursor-pointer px-3 md:px-3.5 py-1.5 rounded-[50px] font-normal inline-block relative mb-0 bg-gray-200 hover:bg-gray-300 peer-checked:bg-white peer-checked:outline-2 peer-checked:outline-green-600">
+                                {technology}
+                            </label>
+                        </div>
+                    ))}
                 </div>
                 <div className="grid grid-cols-4 gap-5">
                     <ProductCard />

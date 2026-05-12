@@ -47,9 +47,6 @@ function TaskCard ({ task }) {
                         <img className='size-8 md:size-12' src={money} alt="" />
                         <div className="money-reward">
                             Денежное вознаграждение
-                            <div className="money-amount">
-                                {task.money_reward}
-                            </div>
                         </div>
                     </div>
                 )}

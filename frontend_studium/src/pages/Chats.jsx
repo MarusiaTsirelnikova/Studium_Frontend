@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import { useUser } from '../userContext';
 
 function Chats() {
     const { user } = useUser()
+    const navigate = useNavigate()
 
     const [message, setMessage] = useState('');
     const textareaRef = useRef(null);
@@ -36,6 +37,10 @@ function Chats() {
         handleSend();
         }
     };
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const options = ['Профиль', 'Настройки', 'Выйти'];
 
     return (
         <div className="mx-5 md:mx-62.5 flex gap-7.5 pb-10">
@@ -101,21 +106,46 @@ function Chats() {
                 </div>
             </div>
             <div className="basis-3/4 bg-gray-200 flex flex-col outline outline-gray-300 rounded-md">
-                <div className="flex bg-white p-2.5 items-center gap-5 border-b border-gray-200">
-                    <div className="bg-gray-300 w-12 h-12 rounded-full content-center text-center">
-                        Photo
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                        <div className="text-[18px]">
-                            Разработка программного приложения
+                <div className="flex justify-between bg-white p-2.5 items-center gap-5 border-b border-gray-200">
+                    <div className="flex items-center gap-5">
+                        <div className="bg-gray-300 w-12 h-12 rounded-full content-center text-center">
+                            Photo
                         </div>
-                        <div className="text-sm">
-                            Участники общения
+                        <div className="flex flex-col gap-1.5">
+                            <div className="text-[18px] cursor-pointer" onClick={() => navigate('/tasks/1')} >
+                                Разработка программного приложения
+                            </div>
+                            <div className="text-sm cursor-pointer" onClick={() => navigate('/tasks/1/edit-users')} >
+                                Участники общения
+                            </div>
                         </div>
+                        
                     </div>
                     {user.role !== 'student' &&
-                        <div className="">
-
+                        <div onClick={() => setIsOpen(!isOpen)} className=" py-2 px-3.5 rounded-full text-white bg-gray-400 hover:bg-gray-500 cursor-pointer">
+                            ⋮
+                            {isOpen && (
+                            <div className="origin-top-left absolute right-65 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                            <div className="py-1">
+                                <a
+                                    key={1}
+                                    href="/tasks/1"
+                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Перейти к задаче
+                                </a>
+                                <a
+                                    key={2}
+                                    href="/tasks/1/edit-users"
+                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Изменить участников
+                                </a>
+                            </div>
+                            </div>
+                        )}
                         </div>
                     }
                 </div>

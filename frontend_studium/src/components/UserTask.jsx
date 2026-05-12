@@ -83,11 +83,19 @@ function UserTaskButton ({ activeTab, task }) {
         case 'archived-projects':
             return (
                 <div className="flex gap-3.75 text-sm">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-nowrap" onClick={() => navigate(`/chats`)}>
-                        Посмотреть решение задачи
-                    </div>
-                    <div className="underline px-3.5 py-1.25 hover:font-medium cursor-pointer" onClick={() => navigate(`/tasks/${task}`)}>
-                        Посмотреть подробности задачи
+                    <div className="">
+                        <div className="flex justify-between pb-2.5">
+                            <div className="font-bold">
+                                Комментарий от заказчика
+                            </div>
+                            <div className="">
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </div>
+                            
+                        <div className="pl-2.5">
+                            Исполнитель выполнил задачу оперативно. Работать с ним было приятно: исполнитель предлагал варианты решения, вносил правки. Реализованный проект находится в эксплуатации.
+                        </div>
                     </div>
                 </div>
             )

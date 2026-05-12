@@ -4,6 +4,30 @@ import UserTask from '../components/UserTask'
 
 import { useUser } from '../userContext'
 
+function TaskModal ({ onClose }) {
+    return (
+        <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
+            <div className="w-[35%] absolute top-[50%] left-[50%] translate-[-50%]">
+                <div className="p-6.25 flex bg-white flex-col gap-6.25">
+                    <div className="text-lg self-center">
+                        Помогите нам стать лучше!
+                    </div>
+                    <div className="text-gray-500 text-sm text-center">
+                        Оставьте обращение к администраторам с предложениями по улучшению платформы и ее функций!
+                    </div>
+                    <div className="text-sm">
+                        <textarea placeholder='Ваше обращение...' className='p-1.25 w-full h-37.5 outline outline-gray-200 focus:outline-green-700' name="" id=""></textarea>
+                    </div>
+                    <div className="cursor-pointer self-center text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
+                        Отправить
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    )   
+}
+
 
 function Profile () {
     const { user } = useUser()
@@ -81,7 +105,14 @@ function Profile () {
         setActiveTab('current-projects');
     }, [])
 
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
+
     return (
+        <>
         <div className="mx-5 md:mx-62.5">
             <div className="flex gap-7.5 mb-12.5">
                 <div className="bg-gray-200 w-18.75 h-18.75 md:w-37.5 md:h-37.5 rounded-full content-center text-center">
@@ -113,16 +144,21 @@ function Profile () {
                 
             </div>
             <div className="">
-                <div className="flex border-b border-gray-300 w-full">
-                    {tabs.map((tab) => (
-                        <button key={tab.id}
-                            className={`px-4 py-2 hover:text-green-600 font-medium cursor-pointer ${
-                                activeTab === tab.id ? "border-b-2 border-green-700 " : 'text-gray-500'
-                            }`}
-                            onClick={() => setActiveTab(tab.id)}>
-                            {tab.label}
-                        </button>
-                    ))}
+                <div className="flex justify-between border-b border-gray-300 w-full">
+                    <div className="">
+                        {tabs.map((tab) => (
+                            <button key={tab.id}
+                                className={`px-4 py-2 hover:text-green-600 font-medium cursor-pointer ${
+                                    activeTab === tab.id ? "border-b-2 border-green-700 " : 'text-gray-500'
+                                }`}
+                                onClick={() => setActiveTab(tab.id)}>
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+                    <div onClick={() => setIsModalOpen(true)} className="cursor-pointer hover:border-b hover:border-b-green-700">
+                        Помогите нам стать лучше!
+                    </div>
                 </div>
                 
 
@@ -139,6 +175,10 @@ function Profile () {
 
             
         </div>
+
+        {isModalOpen && <TaskModal onClose={closeModal} />}
+
+        </>
     )
 }
 

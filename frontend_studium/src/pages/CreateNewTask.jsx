@@ -182,16 +182,13 @@ function CreateNewTask ({ type }) {
                                 </div>
                                 <div className="flex items-start gap-5 flex-col md:flex-row">
                                     <div className="pt-1.25 flex gap-1.5">
-                                        <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} name="" id="" className="bg-white pl-1" />
+                                        <input type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} name="" id="" className="h-5 w-5 rounded border-gray-400 accent-green-700 cursor-pointer" />
                                         <label htmlFor="">Денежное вознаграждение</label>
-                                    </div>
-                                    <div className={isChecked ? '' : 'hidden'}>
-                                        <input type="number" className="bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25"/>
                                     </div>
                                 </div>
                             </div>
                             <div className="text-sm text-gray-500 mt-2.5">
-                                Укажите сумму вознаграждения во внутренней валюте онлайн-платформы, которое получит исполнитель в случае успешного завершения задачи. Вы также можете указать сумму денежного вознаграждения, которое готовы оплатить исполнителю
+                                Укажите сумму вознаграждения во внутренней валюте онлайн-платформы, которое получит исполнитель в случае успешного завершения задачи. Вы также можете указать наличие денежного вознаграждения
                             </div>
                         </div>
                     </div>
