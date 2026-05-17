@@ -28,7 +28,7 @@ function Profile () {
             student: [
                 {id: 'current-projects', label: 'Текущие проекты'},
                 {id: 'my-responses', label: 'Мои отклики'},
-                {id: 'archived-projects', label: 'Архивные проекты'},
+                {id: 'archived-projects', label: 'Завершенные проекты'},
             ],
             customer: [
                 {id: 'current-projects', label: 'Текущие проекты'},
