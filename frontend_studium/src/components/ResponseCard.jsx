@@ -41,14 +41,14 @@ function ResponseCard () {
                 </div>
             </div>
             <div className="mt-6.25 flex gap-7.5 justify-end items-center">
-                <a href="/profile" className="text-sm underline hover:font-medium">
+                <a href="/profile" className="text-sm underline hover:font-medium hidden md:block">
                     Посмотреть профиль
                 </a>
                 {/* <div className="bg-gray-500 px-5 py-3.75 hover:bg-gray-600 cursor-pointer" onClick={toggle}>
                         Назначить исполнителем
                 </div> */}
-                <div className={`px-5 py-3 cursor-pointer border-3 ${buttonState ? 'bg-white border-green-700' : 'bg-green-700 hover:bg-green-800 text-white border-transparent'}`} onClick={toggle}>
-                    {buttonState ? 'Назначен исполнителем' : 'Назначить исполнителем'}
+                <div className={`px-5 py-3 rounded-md cursor-pointer border-3 ${buttonState ? 'bg-white border-green-700' : 'bg-green-700 hover:bg-green-800 text-white border-transparent'}`} onClick={toggle}>
+                    {buttonState ? 'Выбран исполнителем' : 'Выбрать исполнителем'}
                 </div>
             </div>
         </div>

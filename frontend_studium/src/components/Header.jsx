@@ -23,9 +23,6 @@ function Header () {
                     {user.role === 'student' &&
                         <a href="/studium-store" className='hover:text-green-700'>Магазин</a>
                     }
-                    {user.role === 'moderator' &&
-                        <a href="/users" className="hover:bg-gray-700">Пользователи</a>
-                    }
                 </div>
 
                     

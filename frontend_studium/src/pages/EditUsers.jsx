@@ -1,12 +1,18 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function AskModal ({ onClose }) {
     return (
         <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
             <div className="w-[30%] absolute top-[50%] left-[50%] translate-[-50%]">
-                <div className="p-6.25 flex bg-white flex-col gap-6.25">
-                    <div className="text-lg font-bold self-center text-red-700">
-                        Удаление участника
+                <div className="p-6.25 flex rounded-md bg-white flex-col gap-6.25">
+                    <div className="flex flex-col justify-between">
+                        <div onClick={onClose} className="self-end hover:font-bold cursor-pointer">
+                            ✖
+                        </div>
+                        <div className="text-lg font-bold self-center text-red-700">
+                            Удаление участника
+                        </div>
                     </div>
                     <div className="text-center">
                         Вы уверены, что хотите удалить <span className='font-bold'>[Имя пользователя]</span>?
@@ -29,17 +35,22 @@ function AskModal ({ onClose }) {
 }
 
 function SuccessModal ({ onClose }) {
+    const navigate = useNavigate()
+
     return (
         <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
             <div className="w-[30%] absolute top-[50%] left-[50%] translate-[-50%]">
-                <div className="p-6.25 flex bg-white flex-col gap-6.25">
+                <div className="p-6.25 flex rounded-md bg-white flex-col gap-6.25">
                     <div className="text-lg font-bold self-center">
                         Успешно!
                     </div>
                     <div className="text-center">
                         Состав участников проекта Разработка программного приложения был изменен.
                     </div>
-                    <div className="cursor-pointer self-center rounded-md text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
+                    <div 
+                        className="cursor-pointer self-center rounded-md text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" 
+                        onClick={() => navigate('/chats')}
+                    >
                         Понятно
                     </div>
                 </div>
@@ -48,10 +59,9 @@ function SuccessModal ({ onClose }) {
     )
 }
 
-function PaginatedTable ({ type }) {
-    const [selectedIds, setSelectedIds] = useState(new Set())
-    const [searchName, setSearchName] = useState('')
-  
+function PaginatedTable ({ type }) {  
+    const [selectedUsers, setSelectedUsers] = useState(new Set())
+
     const [testData, setTestData] = useState([
         { id: 1, name: 'Someone A', faculty: 'ЭФ', speciality: 'Software Developer', group: 'ПИ-22' },
         { id: 2, name: 'Someone B', faculty: 'ФФКиС', speciality: 'Product Manager', group: 'ПИ-23' },
@@ -103,28 +113,16 @@ function PaginatedTable ({ type }) {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
-    };
-
-    console.log(testData.slice(indexOfFirstItem, indexOfLastItem))
-
-    const isAllSelected = testData.length > 0 && selectedIds.size === testData.length
-
-    const handleSelectAll = () => {
-        if (isAllSelected) {
-            setSelectedIds(new Set());
-        } else {
-            setSelectedIds(new Set(testData.map(item => item.id)));
-        }
     }
 
-    const handleSelectOne = (id) => {
-        const newSelected = new Set(selectedIds);
+    const toggleUser = (id) => {
+        const newSelected = new Set(selectedUsers)
         if (newSelected.has(id)) {
-            newSelected.delete(id);
+            newSelected.delete(id)
         } else {
-            newSelected.add(id);
+            newSelected.add(id)
         }
-        setSelectedIds(newSelected);
+        setSelectedUsers(newSelected)
     }
  
     return (
@@ -133,62 +131,63 @@ function PaginatedTable ({ type }) {
                 <thead className="bg-green-700">
                     {type === 'exec' && 
                         <tr>
-                            <th className="w-7.5 px-6 py-3 font-medium text-gray-700 cursor-pointer">
-                            <input 
-                                type="checkbox" 
-                                checked={isAllSelected}
-                                onChange={handleSelectAll}
-                                className='cursor-pointer'
-                            />
-                            </th>
-                            <th onClick={() => handleSort('name')} className="text-white px-6 py-3 font-medium cursor-pointer">Имя {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
-                            <th onClick={() => handleSort('faculty')} className="text-white px-6 py-3 font-medium cursor-pointer">Факультет {sortConfig.key === 'faculty' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
-                            <th onClick={() => handleSort('speciality')} className="text-white px-6 py-3 font-medium cursor-pointer">Специальность {sortConfig.key === 'speciality' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
-                            <th onClick={() => handleSort('group')} className="text-white px-6 py-3 font-medium cursor-pointer">Группа {sortConfig.key === 'group' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
+                            <th onClick={() => handleSort('name')} className="w-[60%] border border-white text-white px-6 py-3 font-medium cursor-pointer">ФИО исполнителя {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
+                            {/* <th onClick={() => handleSort('faculty')} className="w-[15%] border border-white text-white px-6 py-3 font-medium cursor-pointer">Факультет {sortConfig.key === 'faculty' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
+                            <th onClick={() => handleSort('speciality')} className="w-[20%] border border-white text-white px-6 py-3 font-medium cursor-pointer">Специальность {sortConfig.key === 'speciality' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th> */}
+                            <th onClick={() => handleSort('group')} className="w-[15%] border border-white text-white px-6 py-3 font-medium cursor-pointer">Группа {sortConfig.key === 'group' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
+                            <th className="w-[15%] border border-white text-white px-6 py-3 font-medium">Действие</th>
                         </tr>
                     }
                     {type === 'moder' && 
                         <tr>
-                            <th className="w-7.5 text-white px-6 py-3 font-medium cursor-pointer">
-                            №
-                            </th>
-                            <th onClick={() => handleSort('name')} className="w-[70%] text-white px-6 py-3 font-medium cursor-pointer">Имя {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
-                            <th className="text-white px-6 py-3 font-medium cursor-pointer">Действие</th>
+                            <th onClick={() => handleSort('name')} className="border border-white text-white px-6 py-3 font-medium cursor-pointer">ФИО модератора {sortConfig.key === 'name' && (sortConfig.direction === 'ascending' ? '🔼' : '🔽')}</th>
+                            <th className="w-[15%] border border-white text-white px-6 py-3 font-medium">Действие</th>
                         </tr>
                     }
                 </thead>
                 {type === 'exec' && 
                     <tbody>
-                        {currentItems.map((person) => (
-                            <tr key={person.id} className="border-b hover:bg-gray-50 text-sm">
-                                <td className="px-6 py-3">
-                                    <input 
-                                    type="checkbox" 
-                                    checked={selectedIds.has(person.id)}
-                                    onChange={() => handleSelectOne(person.id)}
-                                    />
-                                </td>
-                                <td className="px-6 py-3">{person.name}</td>
-                                <td className="px-6 py-3">{person.faculty}</td>
-                                <td className="px-6 py-3">{person.speciality}</td>
-                                <td className="px-6 py-3">{person.group}</td>
-                            </tr>
-                        ))}
+                        {currentItems.map((person, index) => {
+                            const isChecked = selectedUsers.has(person.id)
+                            return (
+                                <tr key={person.id} className="hover:bg-gray-100 text-sm">
+                                    <td className="border border-gray-300 px-6 py-3">{person.name}</td>
+                                    {/* <td className="border border-gray-300 px-6 py-3">{person.faculty}</td>
+                                    <td className="border border-gray-300 px-6 py-3">{person.speciality}</td> */}
+                                    <td className="border border-gray-300 px-6 py-3">{person.group}</td>
+                                    <td className="border border-gray-300 px-6 py-3 text-center">
+                                        <button key={person.id} 
+                                            onClick={() => toggleUser(person.id)} 
+                                            className={`w-23.5 h-7 flex justify-center items-center cursor-pointer px-3 py-1.5 rounded-md ${
+                                                isChecked ? "box-border border-2 border-red-600 hover:border-red-700" : 'text-white bg-green-700 hover:bg-green-800'}`}
+                                        >
+                                            { isChecked ? "Удалить" : "Добавить" }
+                                        </button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 }
                 {type === 'moder' && 
                     <tbody>
-                        {currentItems.map((person, index) => (
-                            <tr key={person.id} className="border-b hover:bg-gray-50 text-sm">
-                                <td className="px-6 py-3">{index + 1}</td>
-                                <td className="px-6 py-3">{person.name}</td>
-                                <td className="px-6 py-3">
-                                    <button className='cursor-pointer px-3 py-1.5 rounded-md text-white bg-green-700 hover:bg-green-800'>
-                                        Добавить в проект
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {currentItems.map((person, index) => {
+                            const isChecked = selectedUsers.has(person.id)
+                            return (
+                                <tr key={person.id} className="hover:bg-gray-50 text-sm">
+                                    <td className="border border-gray-300 px-6 py-3">{person.name}</td>
+                                    <td className="border border-gray-300 px-6 py-3">
+                                        <button key={person.id} 
+                                            onClick={() => toggleUser(person.id)} 
+                                            className={`w-23.5 h-7 flex justify-center items-center cursor-pointer px-3 py-1.5 rounded-md ${
+                                                isChecked ? "box-border border-2 border-red-600 hover:border-red-700" : 'text-white bg-green-700 hover:bg-green-800'}`}
+                                        >
+                                            { isChecked ? "Удалить" : "Добавить" }
+                                        </button>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 }    
             </table>
@@ -280,7 +279,7 @@ function EditUsers () {
                                 <div className="border-b border-gray-400 pb-2.5">
                                     Заказчик:
                                     <div className="pl-2.5 py-4 text-sm">
-                                        [Наименование организации]
+                                        [Фамилия Имя заказчика]
                                     </div>
                                 </div>
                                 <div className="border-b border-gray-400 pt-5 pb-2.5">

@@ -44,17 +44,15 @@ function Chats() {
 
     return (
         <div className="mx-5 md:mx-62.5 flex gap-7.5 pb-10">
-            <div className="basis-1/4 flex flex-col gap-5 p-2.5 h-[80vh] outline outline-gray-300 rounded-md">
-                <div className="">
+            <div className="basis-1/4 flex flex-col gap-3 p-2.5 h-[80vh] outline outline-gray-300 rounded-md">
+                {/* <div className="">
                     <input type="text" className="bg-white outline outline-gray-400 focus:outline-green-600 rounded-md w-full p-1.25" placeholder="Поиск среди чатов..." />
+                </div> */}
+                <div className="text-lg text-center border-b border-b-gray-300 pb-2">
+                    Список чатов
                 </div>
                 <div className="flex flex-col gap-2.5">
                     <div className="cursor-pointer bg-white flex gap-2.5 p-2.5 border-b border-gray-200">
-                        <div className="self-center">
-                            <div className="bg-gray-500 w-17.75 h-17.75 rounded-full content-center text-center">
-                                Фото
-                            </div>
-                        </div>
                         <div className="flex flex-col gap-1.25">
                             <div className="flex">
                                 <div title="Разработка программного приложения" className="line-clamp-2 text-green-700 font-bold">
@@ -77,11 +75,6 @@ function Chats() {
                         </div>
                     </div>
                     <div className="cursor-pointer  bg-white flex gap-2.5 p-2.5 border-b border-gray-200">
-                        <div className="self-center">
-                            <div className="bg-gray-500 w-17.75 h-17.75 rounded-full content-center text-center">
-                                Фото
-                            </div>
-                        </div>
                         <div className="flex flex-col gap-1.25">
                             <div className="flex">
                                 <div className="line-clamp-2 text-green-700 font-bold">
@@ -116,34 +109,36 @@ function Chats() {
                                 Разработка программного приложения
                             </div>
                             <div className="text-sm cursor-pointer" onClick={() => navigate('/tasks/1/edit-users')} >
-                                Участники общения
+                                Участники чата
                             </div>
                         </div>
                         
                     </div>
                     {user.role !== 'student' &&
-                        <div onClick={() => setIsOpen(!isOpen)} className=" py-2 px-3.5 rounded-full text-white bg-gray-400 hover:bg-gray-500 cursor-pointer">
+                        <div onClick={() => setIsOpen(!isOpen)} className=" py-2 px-3.5 rounded-full text-white bg-green-700 hover:bg-green-800 cursor-pointer">
                             ⋮
                             {isOpen && (
-                            <div className="origin-top-left absolute right-65 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
-                            <div className="py-1">
-                                <a
-                                    key={1}
-                                    href="/tasks/1"
-                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Перейти к задаче
-                                </a>
-                                <a
-                                    key={2}
-                                    href="/tasks/1/edit-users"
-                                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Изменить участников
-                                </a>
-                            </div>
+                            <div className="origin-top-left absolute right-65 mt-4 w-56 rounded-md shadow-lg bg-white outline outline-green-700 focus:outline-none z-10">
+                                <div className="py-1 hover:font-semibold">
+                                    <a
+                                        key={1}
+                                        href="/tasks/1"
+                                        className="text-gray-700 block px-4 py-2 text-sm"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        Перейти к задаче
+                                    </a>
+                                </div>
+                                <div className="py-1 hover:font-semibold">
+                                    <a
+                                        key={2}
+                                        href="/tasks/1/edit-users"
+                                        className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        Изменить участников
+                                    </a>
+                                </div>
                             </div>
                         )}
                         </div>

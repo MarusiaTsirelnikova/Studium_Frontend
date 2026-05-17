@@ -1,6 +1,6 @@
 function Footer () {
     return (
-        <footer className="flex w-full mt-auto items-center text-center justify-around pb-5">
+        <footer className="w-full mt-auto text-center pb-5 pt-2">
             2026
         </footer>
     )

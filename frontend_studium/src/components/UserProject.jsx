@@ -5,7 +5,9 @@ import database from '../assets/database.png'
 import points from '../assets/points-reward.png'
 import money from '../assets/money-reward.png'
 
-function UserTaskCategory ({ category }) {
+import { useUser } from '../userContext'
+
+function UserProjectCategory ({ category }) {
     switch (category) {
         case 'Веб-программирование':
             return <img className='size-8 md:size-10' src={web} alt="" />;
@@ -16,17 +18,19 @@ function UserTaskCategory ({ category }) {
     }
 }
 
-function UserTaskButton ({ activeTab, task }) {
+function UserProjectButton ({ activeTab, project }) {
     const navigate = useNavigate()
+
+    const { user } = useUser()
 
     switch(activeTab) {
         case 'current-projects':
             return (
                 <div className="flex gap-3.75 text-sm">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-nowrap" onClick={() => navigate(`/chats`)}>
+                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-nowrap rounded-md" onClick={() => navigate(`/chats`)}>
                         Перейти к чату
                     </div>
-                    <div className="underline px-3.5 py-1.25 hover:font-medium cursor-pointer" onClick={() => navigate(`/tasks/${task}`)}>
+                    <div className="underline px-3.5 py-1.25 hover:font-medium cursor-pointer hidden md:block" onClick={() => navigate(`/tasks/${project}`)}>
                         Посмотреть подробности задачи
                     </div>
                 </div>
@@ -35,7 +39,7 @@ function UserTaskButton ({ activeTab, task }) {
         case 'my-responses':
             return (
                 <div className="flex gap-3.75">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm" onClick={() => navigate(`/tasks/${task}`)}>
+                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm rounded-md" onClick={() => navigate(`/tasks/${project}`)}>
                         Посмотреть подробности задачи
                     </div>
                 </div>
@@ -44,10 +48,12 @@ function UserTaskButton ({ activeTab, task }) {
         case 'looking-for-executor':
             return (
                 <div className="flex gap-3.75 text-sm">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm" onClick={() => navigate(`/tasks/1/responses`)}>
-                        Посмотреть откликнувшихся
-                    </div>
-                    <div className="underline px-3.5 py-1.25 hover:font-medium cursor-pointer" onClick={() => navigate(`/tasks/${task}`)}>
+                    {user.role !== 'customer' &&
+                        <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm rounded-md" onClick={() => navigate(`/tasks/1/responses`)}>
+                            Посмотреть откликнувшихся
+                        </div>
+                    }
+                    <div className={`${user.role !== 'customer' ? 'underline px-3.5 py-1.25 hover:font-medium cursor-pointer' : 'px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm rounded-md'}`} onClick={() => navigate(`/tasks/${project}`)}>
                         Посмотреть подробности задачи
                     </div>
                 </div>
@@ -56,7 +62,7 @@ function UserTaskButton ({ activeTab, task }) {
         case 'under-inspection':
             return (
                 <div className="flex gap-3.75">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm" onClick={() => navigate(`/tasks/${task}`)}>
+                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm rounded-md" onClick={() => navigate(`/tasks/${project}`)}>
                         Посмотреть подробности задачи
                     </div>
                 </div>
@@ -65,7 +71,7 @@ function UserTaskButton ({ activeTab, task }) {
         case 'wait-for-inspection':
             return (
                 <div className="flex gap-3.75">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm" onClick={() => navigate(`/moderate-task/${task}`)}>
+                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-sm rounded-md" onClick={() => navigate(`/moderate-task/${project}`)}>
                         Перейти к задаче
                     </div>
                 </div>
@@ -74,7 +80,7 @@ function UserTaskButton ({ activeTab, task }) {
         case 'cancelled-projects':
             return (
                 <div className="flex gap-3.75 text-sm">
-                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-nowrap" onClick={() => navigate(`/chats`)}>
+                    <div className="px-3.5 py-1.25 text-white bg-green-700 hover:bg-green-800 cursor-pointer text-nowrap rounded-md" onClick={() => navigate(`/chats`)}>
                         Посмотреть подробности задачи
                     </div>
                 </div>
@@ -102,58 +108,54 @@ function UserTaskButton ({ activeTab, task }) {
         }
 }
 
-function UserTask ({ task, activeTab }) {
+function UserProject ({ project, activeTab }) {
     const navigate = useNavigate()
     
     return (
-        <div className='bg-white outline outline-gray-200 rounded-md max-w-173.5 p-2.5 md:p-5 text-base flex flex-col'>
-            <div className="font-semibold text-base md:text-lg pb-1 md:pb-2 cursor-pointer" onClick={() => navigate(`/tasks/${task.id}`)}> 
-                {task.title}
+        <div className='outline outline-gray-200 rounded-md max-w-173.5 p-3 md:p-5 text-base flex flex-col'>
+            <div className="font-semibold text-base md:text-lg pb-6 cursor-pointer" onClick={() => navigate(`/tasks/${project.id}`)}> 
+                {project.title}
             </div>
-            <div className="text-sm pb-3 md:pb-6">
-                {task.author}
-            </div>
-            <div className="grid grid-cols-3 gap-5.5 pb-3 md:pb-6">
-                <div className="flex text-sm">
-                    <UserTaskCategory category={task.category} />
-                    {task.category}
+            {/* <div className="text-xs md:text-sm pb-4 md:pb-6">
+                {project.author}
+            </div> */}
+            <div className="flex items-center gap-15 md:gap-10 pb-3 md:pb-6">
+                <div className="flex justify-baseline text-sm gap-2">
+                    <UserProjectCategory category={project.category} />
+                    {project.category}
                 </div>
-                
-                <div className="flex gap-5.5">
+                <div className="flex gap-2">
                     <img className='size-8 md:size-10' src={points} alt="" />
-                    <div className="points-reward text-sm">
+                    <div className="text-sm">
                         Награда
-                        <div className="points-amount">
-                            {task.points_reward}
+                        <div className="">
+                            {project.points_reward}
                         </div>
                     </div>
                 </div>
-                {task.money_reward !== 0 && (
-                    <div className="flex gap-5.5">
+                {project.money_reward === 0 && (
+                    <div className="flex gap-2">
                         <img className='size-8 md:size-10' src={money} alt="" />
-                        <div className="money-reward">
+                        <div className="text-sm">
                             Денежное вознаграждение
-                            <div className="money-amount">
-                                {task.money_reward}
-                            </div>
                         </div>
                     </div>
                 )}
             </div>
-            <div className="line-clamp-4 md:line-clamp-3 mb-2 md:mb-6">
-                {task.description}
+            <div className="md:text-base text-sm line-clamp-4 md:line-clamp-3 mb-2 md:mb-6">
+                {project.description}
             </div>
             <div className="flex gap-1.25 flex-wrap pb-3 md:pb-6">
-                {task.technologies.map((technology) => (
+                {project.technologies.map((technology) => (
                     <div className="bg-gray-200 px-2.5 py-1.5 rounded-[50px] text-xs">
                         {technology}
                     </div>
                 ))}
             </div>
 
-            <UserTaskButton activeTab={activeTab} task={task.id}/>
+            <UserProjectButton activeTab={activeTab} project={project.id}/>
 
-            {activeTab === 'tab1' && 
+            {/* {activeTab === 'tab1' && 
                 <div className="flex gap-3.75 text-sm">
                     <div className="px-3.5 py-1.25 bg-blue-200 hover:bg-blue-300 cursor-pointer text-nowrap" onClick={() => navigate(`/chats`)}>
                         Перейти к чату
@@ -176,10 +178,10 @@ function UserTask ({ task, activeTab }) {
                         Посмотреть решение
                     </div>
                 </div>
-            }
+            } */}
             
         </div>
     )
 }
 
-export default UserTask
+export default UserProject

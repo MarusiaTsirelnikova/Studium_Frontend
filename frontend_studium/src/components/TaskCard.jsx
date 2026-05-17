@@ -21,12 +21,12 @@ function TaskCard ({ task }) {
     
     return (
         <div className='bg-white outline outline-gray-300 rounded-md md:max-w-264.25 p-3.75 md:p-7.5 text-base flex flex-col cursor-pointer' onClick={() => navigate(`/tasks/${task.id}`)}>
-            <div className="font-semibold text-xl md:text-2xl pb-2 text-green-700"> 
+            <div className="font-semibold text-xl md:text-2xl text-green-700 pb-3 md:pb-6"> 
                 {task.title}
             </div>
-            <div className="text-sm pb-3 md:pb-6">
+            {/* <div className="text-sm ">
                 {task.author}
-            </div>
+            </div> */}
             <div className="grid grid-cols-3 gap-2.75 md:gap-5.5 pb-3 md:pb-6">
                 <div className="flex text-sm md:text-base">
                     <TaskCardCategory category={task.category} />

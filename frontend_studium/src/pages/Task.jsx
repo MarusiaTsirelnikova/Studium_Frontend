@@ -1,13 +1,30 @@
 import { useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { useUser } from '../userContext';
+import mobile from '../assets/mobile.png'
+import web from '../assets/web.png'
+import database from '../assets/database.png'
+import points from '../assets/points-reward.png'
+import money from '../assets/money-reward.png'
+
+import { useUser } from '../userContext'
+
+function UserProjectCategory ({ category }) {
+    switch (category) {
+        case 'Веб-программирование':
+            return <img className='size-8 md:size-10' src={web} alt="" />;
+        case 'Мобильная разработка':
+            return <img className='size-8 md:size-10' src={mobile} alt="" />;
+        case 'Создание и администрирование БД':
+            return <img className='size-8 md:size-10' src={database} alt="" />;
+    }
+}
 
 function ConfirmationModal ({task, onClose}) {
     return (
         <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
-            <div className="w-[35%] absolute top-[50%] left-[50%] translate-[-50%]">
-                <div className="p-6.25 flex bg-white flex-col gap-6.25">
+            <div className="w-[30%] absolute top-[50%] left-[50%] translate-[-50%]">
+                <div className="p-6.25 flex rounded-md bg-white flex-col gap-6.25 text-center">
                     <div className="text-lg self-center">
                         Отлично!
                     </div>
@@ -17,12 +34,11 @@ function ConfirmationModal ({task, onClose}) {
                     <div className="text-gray-500 text-sm">
                         Отследить статус задачи можно в профиле
                     </div>
-                    <div className="cursor-pointer self-center text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
+                    <div className="cursor-pointer rounded-md self-center text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
                         Понятно
                     </div>
                 </div>
             </div>
-            
         </div>
     )   
 }
@@ -169,7 +185,7 @@ function Task() {
                 </div>
                 <div className="flex gap-3.75 md:gap-7.5 text-sm md:text-sm pt-1.25 md:pt-2.5 font-normal">
                   <p>
-                    Автор: {currentTask.author}
+                    Автор: [Организация]
                   </p>
                   <p>
                     ДатаПубликации
@@ -178,11 +194,33 @@ function Task() {
               </div>
               <div className="text-lg md:text-xl font-semibold">
                 Описание задачи
-                <div className="text-base pt-1.25 md:pt-2.5 pb-6.5 font-normal">
+                <div className="text-base pt-1.25 md:pt-2.5 pb-10 font-normal">
                   {currentTask.description}
                 </div>
-                <div className="advantages">
-
+                <div className="font-normal text-base">
+                  <div className="flex items-center gap-15 md:gap-10">
+                    <div className="flex justify-baseline gap-2">
+                      <UserProjectCategory category={currentTask.category} />
+                      {currentTask.category}
+                    </div>
+                    <div className="flex gap-2">
+                      <img className='size-8 md:size-10' src={points} alt="" />
+                      <div className="">
+                        Награда
+                        <div className="">
+                          {currentTask.points_reward}
+                        </div>
+                      </div>
+                    </div>
+                    {currentTask.money_reward === 0 && (
+                      <div className="flex gap-2">
+                        <img className='size-8 md:size-10' src={money} alt="" />
+                          <div className="">
+                            Денежное вознаграждение
+                          </div>
+                        </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="text-lg md:text-xl font-semibold">
@@ -198,7 +236,7 @@ function Task() {
                     ))}
                 </div>
               </div>
-              <div className={`text-lg md:text-xl font-semibold ${user.role === 'moderator' ? 'hidden' : '' }`}>
+              {/* <div className={`text-lg md:text-xl font-semibold ${user.role === 'moderator' ? 'hidden' : '' }`}>
                 Количество откликов на задачу
                 <div className="text-base pt-1.25 md:pt-2.5 font-normal">
                   На данный момент на задачу откликнулись <span className='font-bold'>xxx</span> исполнителей
@@ -209,7 +247,7 @@ function Task() {
                 <div className="text-base pt-5 font-normal text-gray-500">
                   Если будет такое API, то в этом блоке можно будет показать 2-3 задачки от автора текущей задачи или схожие по категории задачи. Если такого API не будет, то этот блок будет просто удален
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex basis-1/4">
@@ -222,7 +260,7 @@ function Task() {
                   Вы можете добавить небольшой текст к своему отклику, который увидит заказчик, или продолжить без него
                 </div>
                 <textarea rows='7' placeholder='Место для отклика...' className='bg-white w-full resize-none p-1.25 rounded-md outline outline-gray-300 focus:outline-green-700'/>
-                <div className=' text-white bg-green-700 hover:bg-green-800 active:bg-green-900 w-full py-3.25 md:mt-3.75 font-bold text-base cursor-pointer' onClick={() => setIsModalOpen(true)}>
+                <div className='rounded-md text-white bg-green-700 hover:bg-green-800 active:bg-green-900 w-full py-3.25 md:mt-3.75 font-bold text-base cursor-pointer' onClick={() => setIsModalOpen(true)}>
                   Откликнуться
                 </div>
               </div>
@@ -236,7 +274,7 @@ function Task() {
                   XXX
                 </div>
                 <a href={`${taskId}/responses`} className='w-full'>
-                  <div className="text-white bg-green-700 hover:bg-green-800 active:bg-green-900 w-full py-3.25 mt-3.75">
+                  <div className="text-white bg-green-700 hover:bg-green-800 active:bg-green-900 rounded-md w-full py-3.25 mt-3.75">
                     Посмотреть откликнувшихся
                   </div>
                 </a>

@@ -149,15 +149,25 @@ function Tasks () {
                 ))}
               </div>
             </div>
+            <div className="text-lg">
+                <button className='w-full px-3.5 text-center py-2 text-white bg-green-700 hover:bg-green-800 cursor-pointer rounded-md'>
+                  Применить фильтр
+                </button>
+            </div>
           </div>
           <div className="basis-3/4">
-            <div className="flex justify-between w-full mb-6.25">
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1.75 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                <span className="ml-3 text-sm text-gray-900">Показать задания с денежным вознаграждением</span>
-              </label>
-              <input className='bg-white outline outline-gray-400 rounded-md focus:outline-green-600 self-end px-2.5 py-2' type="text" placeholder='Искать задачу...' size='25' />
+            <div className="flex justify-end mb-6.25 focus:outline-red-600">
+              <div className="flex bg-white outline outline-gray-400 rounded-md focus-within:outline-green-600">
+                {/* <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" />
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1.75 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <span className="ml-3 text-sm text-gray-900">Показать задания с денежным вознаграждением</span>
+                </label> */}
+                <input className='outline-0 self-end px-2.5 py-2' type="text" placeholder='Искать задачу...' size='25' />
+                <div className="px-2.5 py-2 cursor-pointer">
+                  🔍
+                </div>
+              </div>
             </div>
             <div className="flex flex-col gap-5">
               {tasks.map((task) => (

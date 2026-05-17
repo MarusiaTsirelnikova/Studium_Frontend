@@ -10,11 +10,11 @@ import Chats from './pages/Chats.jsx'
 import Responses from './pages/Responses.jsx'
 import CreateNewTask from './pages/CreateNewTask.jsx'
 import Shop from './pages/Shop.jsx'
+import OrdersPage from './pages/OrdersPage.jsx'
 import EditUsers from './pages/EditUsers.jsx'
+import HelpUsBecomBetter from './pages/HelpUsBecomeBetter.jsx'
 import PageNotFound from './pages/NotFound.jsx'
 import './App.css'
-
-import Card from './components/Card.jsx'
 
 import { UserProvider } from './userContext.jsx'
 
@@ -39,7 +39,8 @@ function App() {
         <Route path='/tasks/:taskId/edit' element={ <CreateNewTask type='edit' /> }/>
         <Route path='/tasks/:taskId/edit-users' element={ <EditUsers /> }/>
         <Route path='/studium-store' element={ <Shop /> }/>
-        <Route path='/users' element={ <Card /> }/>
+        <Route path='/order-story' element={ <OrdersPage /> }/>
+        <Route path='/help-us-become-better' element={ <HelpUsBecomBetter /> }/>
         <Route path='*' element={ <PageNotFound /> }/>
       </Routes>
       <Footer />

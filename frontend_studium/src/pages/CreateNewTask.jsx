@@ -30,18 +30,18 @@ function TaskModal ({ onClose, type }) {
 
     return (
         <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
-            <div className="w-[35%] absolute top-[50%] left-[50%] translate-[-50%]">
-                <div className="p-6.25 flex bg-white flex-col gap-6.25">
+            <div className="w-[90%] md:w-[35%] absolute top-[50%] left-[50%] translate-[-50%]">
+                <div className="p-6.25 rounded-md flex text-center bg-white flex-col gap-6.25">
                     <div className="text-lg self-center">
                         { title }
                     </div>
-                    <div className="">
+                    <div className="leading-5">
                         { text }
                     </div>
                     <div className="text-gray-500 text-sm">
                         { subtext }
                     </div>
-                    <div className="cursor-pointer self-center text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
+                    <div className="cursor-pointer rounded-md self-center text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" onClick={onClose}>
                         Понятно
                     </div>
                 </div>
@@ -110,28 +110,28 @@ function CreateNewTask ({ type }) {
     return (
         <>
             <div className="mx-5 md:mx-62.5 flex flex-col">
-                <div className="text-2xl md:text-3xl font-bold mb-8.75">
+                <div className="text-2xl md:text-3xl font-semibold mb-8.75">
                     {type === 'create' ? 'Создание новой задачи' : 'Редактирование задачи'}
                 </div>
                 <div className="flex flex-col gap-10 pb-12.5">
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Название задачи
                         </div>
                         <div className="basis-3/4">
                             <input type="text" className="bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25 w-full" />
                         </div>
                     </div>
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Описание задачи
                         </div>
                         <div className="basis-3/4">
                             <textarea name="" id="" rows='15' className="bg-white outline outline-gray-400 focus:outline-green-600 rounded-md w-full p-1.25"></textarea>
                         </div>
                     </div>
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Категория
                         </div>
                         <div className="basis-3/4">
@@ -150,8 +150,8 @@ function CreateNewTask ({ type }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Технологии
                         </div>
                         <div className="basis-3/4">
@@ -170,15 +170,15 @@ function CreateNewTask ({ type }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Вознаграждение
                         </div>
                         <div className="basis-3/4 flex flex-col">
                             <div className="flex md:gap-15 flex-col md:flex-row">
                                 <div className="">
-                                    <input type="number" min='1' className="peer bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25 invalid:outline-red-500" />
-                                    <p className="invisible peer-invalid:visible text-sm text-red-500">Сумма вознаграждения не может быть равной нулю</p>
+                                    <input type="number" min='1' className="peer w-full bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25 invalid:outline-red-500" />
+                                    <p className="hidden peer-invalid:block text-sm text-red-500">Сумма вознаграждения не может быть равной нулю</p>
                                 </div>
                                 <div className="flex items-start gap-5 flex-col md:flex-row">
                                     <div className="pt-1.25 flex gap-1.5">
@@ -192,23 +192,22 @@ function CreateNewTask ({ type }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex">
-                        <div className="text-sm md:text-[18px] basis-1/4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
                             Срок выполнения
                         </div>
                         <div className="basis-3/4">
-                            <input type="date" min={today} className="bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25" />
+                            <input type="date" min={today} className="bg-white w-full md:w-[20%] outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25" />
                             <div className="text-sm text-gray-500 mt-2.5">
                                 Укажите дату, до которой необходимо выполнить данную задачу
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="mb-5 self-center">
-                    <button className="text-white bg-green-700 hover:bg-green-800 active:bg-green-900 cursor-pointer self-center px-8.75 py-3.75 font-bold text-xl" onClick={() => setIsModalOpen(true)}>
+                <div className="mb-5 text-base md:text-lg self-center">
+                    <button className="text-white rounded-md bg-green-700 hover:bg-green-800 active:bg-green-900 cursor-pointer self-center px-8.75 py-3.75 font-bold" onClick={() => setIsModalOpen(true)}>
                         { text }
                     </button>
-                    {/* <FormButton type={type} onClick={() => setIsModalOpen(true)} /> */}
                 </div>
             </div>
 
