@@ -100,25 +100,21 @@ function Chats() {
             </div>
             <div className="basis-3/4 bg-gray-200 flex flex-col outline outline-gray-300 rounded-md">
                 <div className="flex justify-between bg-white p-2.5 items-center gap-5 border-b border-gray-200">
-                    <div className="flex items-center gap-5">
-                        <div className="bg-gray-300 w-12 h-12 rounded-full content-center text-center">
-                            Photo
-                        </div>
+                    <div className="flex items-center pl-5">
                         <div className="flex flex-col gap-1.5">
-                            <div className="text-[18px] cursor-pointer" onClick={() => navigate('/tasks/1')} >
+                            <div title='Перейти к деталям проекта' className="text-[18px] cursor-pointer" onClick={() => navigate('/tasks/1')} >
                                 Разработка программного приложения
                             </div>
                             <div className="text-sm cursor-pointer" onClick={() => navigate('/tasks/1/edit-users')} >
                                 Участники чата
                             </div>
                         </div>
-                        
                     </div>
                     {user.role !== 'student' &&
-                        <div onClick={() => setIsOpen(!isOpen)} className=" py-2 px-3.5 rounded-full text-white bg-green-700 hover:bg-green-800 cursor-pointer">
+                        <div onClick={() => setIsOpen(!isOpen)} className="mr-5 py-2 px-3.5 rounded-full text-white bg-green-700 hover:bg-green-800 cursor-pointer">
                             ⋮
                             {isOpen && (
-                            <div className="origin-top-left absolute right-65 mt-4 w-56 rounded-md shadow-lg bg-white outline outline-green-700 focus:outline-none z-10">
+                            <div className="origin-top-left absolute right-70 mt-4 w-56 rounded-md shadow-lg bg-white outline outline-green-700 focus:outline-none z-10">
                                 <div className="py-1 hover:font-semibold">
                                     <a
                                         key={1}

@@ -113,7 +113,7 @@ function Tasks () {
           <div className="max-w-83.25 basis-1/4 sticky top-25 self-start p-5 pt-0 flex flex-col gap-7.5">
             <div className="flex flex-col gap-1.25">
               <div className="text-lg font-medium mb-2.5">
-                Тип задачи:
+                Тип проекта:
               </div>
               <div className="flex flex-wrap gap-1.25">
                 <div className="relative block">
@@ -163,7 +163,7 @@ function Tasks () {
                   <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1.75 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                   <span className="ml-3 text-sm text-gray-900">Показать задания с денежным вознаграждением</span>
                 </label> */}
-                <input className='outline-0 self-end px-2.5 py-2' type="text" placeholder='Искать задачу...' size='25' />
+                <input className='outline-0 self-end px-2.5 py-2' type="text" placeholder='Искать проект...' size='25' />
                 <div className="px-2.5 py-2 cursor-pointer">
                   🔍
                 </div>
@@ -173,7 +173,6 @@ function Tasks () {
               {tasks.map((task) => (
                 <TaskCard task={task} />
               )) }
-              Думаю, здесь будет реализована пагинация, особенно если мы подразумеваем, что задач может быть много
             </div>
           </div>           
         </div>

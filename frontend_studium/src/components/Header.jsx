@@ -18,7 +18,7 @@ function Header () {
                    
                 <div className="hidden md:flex space-x-6">
                     <a href="/profile" className="hover:text-green-700">Профиль</a>
-                    <a href="/tasks" className="hover:text-green-700">Задачи</a>
+                    <a href="/tasks" className="hover:text-green-700">Проекты</a>
                     <a href="/chats" className='hover:text-green-700'>Чаты</a>
                     {user.role === 'student' &&
                         <a href="/studium-store" className='hover:text-green-700'>Магазин</a>
@@ -41,7 +41,7 @@ function Header () {
                 {isOpen && (
                     <div className="md:hidden pt-25 space-y-2 flex flex-col text-white bg-gray-800">
                         <a href="/profile" className="hover:text-gray-400">Профиль</a>
-                        <a href="/tasks" className="hover:text-gray-400">Задачи</a>
+                        <a href="/tasks" className="hover:text-gray-400">Проекты</a>
                         {user.role === 'moderator' &&
                             <a href="/users" className="hover:bg-gray-700">Пользователи</a>
                         }

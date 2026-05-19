@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useNavigate } from 'react-router-dom'
 
 
@@ -107,6 +107,44 @@ function CreateNewTask ({ type }) {
         navigate('/profile')
     }
 
+    const [selectedFiles, setSelectedFiles] = useState([])
+    const fileInputRef = useRef(null)
+
+    const triggerFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click()
+        }
+    }
+
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files)
+
+        const uniqueNewFiles = files.filter(
+            (newFile) => !selectedFiles.some((oldFile) => oldFile.name === newFile.name)
+        )
+
+        const updatedFiles = [...selectedFiles, ...uniqueNewFiles]
+
+        setSelectedFiles(updatedFiles)
+        syncInputFiles(updatedFiles)
+    }
+
+    const removeFile = (fileName) => {
+        const updatedFiles = selectedFiles.filter((file) => file.name !== fileName)
+        setSelectedFiles(updatedFiles)
+        syncInputFiles(updatedFiles)        
+    }
+
+    const syncInputFiles = (files) => {
+        const dataTransfer = new DataTransfer()
+
+        files.forEach((file) => dataTransfer.items.add(file))
+
+        if (fileInputRef.current) {
+            fileInputRef.current.files = dataTransfer.files
+        }
+    }
+
     return (
         <>
             <div className="mx-5 md:mx-62.5 flex flex-col">
@@ -201,6 +239,52 @@ function CreateNewTask ({ type }) {
                             <div className="text-sm text-gray-500 mt-2.5">
                                 Укажите дату, до которой необходимо выполнить данную задачу
                             </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0">
+                        <div className="text-base font-semibold md:font-normal md:text-lg basis-1/4">
+                            Дополнительные материалы
+                        </div>
+                        <div className="basis-3/4">
+                            <div 
+                                onClick={triggerFileInput} 
+                                className="w-fit cursor-pointer text-white rounded-md bg-green-700 hover:bg-green-800 active:bg-green-900 px-4 py-2"
+                            >
+                                Добавить файлы
+                            </div>
+                            <div className="text-sm text-gray-500 mt-2.5">
+                                Если у Вас есть материалы, относящиеся к создаваемому проекту, то Вы можете прикрепить их здесь
+                            </div>
+                            <input 
+                                type="file" 
+                                ref={fileInputRef}
+                                className="hidden" 
+                                onChange={handleFileChange}
+                                multiple
+                            />
+                            {selectedFiles.length > 0 &&
+                                <div className="pt-3.75">
+                                    <div className="text-sm font-medium text-gray-900 mb-2">
+                                        Прикрепленные файлы ({selectedFiles.length}):
+                                    </div>
+                                    <ul className="border-t border-gray-200 py-2">
+                                        {selectedFiles.map((file, index) => (
+                                        <li key={index} className="flex items-center justify-between py-3 text-sm text-gray-700 not-last:border-b not-last:border-b-gray-300">
+                                            <div className="flex items-center truncate">
+                                                📄
+                                                <span className="truncate">{file.name}</span>
+                                            </div>
+                                            <button
+                                                onClick={() => removeFile(file.name)}
+                                                className="cursor-pointer ml-4 font-medium text-red-600 hover:text-red-500"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

@@ -34,31 +34,6 @@ function AskModal ({ onClose }) {
     )   
 }
 
-function SuccessModal ({ onClose }) {
-    const navigate = useNavigate()
-
-    return (
-        <div className="fixed top-0 left-0 w-full h-full z-9999 bg-black/50">
-            <div className="w-[30%] absolute top-[50%] left-[50%] translate-[-50%]">
-                <div className="p-6.25 flex rounded-md bg-white flex-col gap-6.25">
-                    <div className="text-lg font-bold self-center">
-                        Успешно!
-                    </div>
-                    <div className="text-center">
-                        Состав участников проекта Разработка программного приложения был изменен.
-                    </div>
-                    <div 
-                        className="cursor-pointer self-center rounded-md text-white bg-green-700 hover:bg-green-800 active:bg-green-900 px-6 py-1.5" 
-                        onClick={() => navigate('/chats')}
-                    >
-                        Понятно
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 function PaginatedTable ({ type }) {  
     const [selectedUsers, setSelectedUsers] = useState(new Set())
 
@@ -217,13 +192,12 @@ function PaginatedTable ({ type }) {
 }
 
 function EditUsers () {
+    const navigate = useNavigate()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isModal2Open, setIsModal2Open] = useState(false)
 
     const closeModal = () => {
         setIsModalOpen(false)
-        setIsModal2Open(false)
     }
 
     const [activeTab, setActiveTab] = useState('tab1')
@@ -244,7 +218,7 @@ function EditUsers () {
 
     return (
         <>
-            <div className="mx-62 min-h-[85vh]">
+            <div className="mx-62.5 min-h-[85vh]">
                 <div className="text-3xl font-semibold pb-10">
                     Изменить состав участников проекта Разработка программного приложения
                 </div>
@@ -263,7 +237,13 @@ function EditUsers () {
                                 ))}
                             </div>
                             <div className="mb-2">
-                                <input type="text" placeholder='Искать по имени...' className='bg-white outline outline-gray-400 rounded-md focus:outline-green-600 p-1.25' onChange={(e) => testData.filter(data => data.name.toLowerCase().includes(e.target.value.toLowerCase()))} />
+                                <div className="flex bg-white outline outline-gray-400 rounded-md focus-within:outline-green-600">
+                                    <input type="text" placeholder='Искать по имени...' className='bg-white outline-transparent rounded-md p-1.25' onChange={(e) => testData.filter(data => data.name.toLowerCase().includes(e.target.value.toLowerCase()))} />
+                                    <div className="px-2.5 py-2 cursor-pointer">
+                                        🔍
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -333,10 +313,10 @@ function EditUsers () {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="self-center mt-auto">
-                                <button onClick={() => setIsModal2Open(true)} className='px-9 py-3 cursor-pointer rounded-md text-white text-lg font-bold bg-green-700 hover:bg-green-800 active:bg-green-900'>
-                                    Утвердить участников
-                                </button>
+                            <div className="self-center mt-auto mb-7.5">
+                                <div onClick={() => navigate('/chats')} className="px-9 py-3 cursor-pointer rounded-md text-white text-lg font-bold bg-green-700 hover:bg-green-800 active:bg-green-900">
+                                    Вернуться к чату
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -344,8 +324,6 @@ function EditUsers () {
             </div>
 
             {isModalOpen && <AskModal onClose={closeModal} />}
-
-            {isModal2Open && <SuccessModal onClose={closeModal} />}
 
         </>
     )

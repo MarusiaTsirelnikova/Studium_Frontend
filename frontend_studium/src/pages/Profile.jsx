@@ -28,7 +28,7 @@ function Profile () {
             student: [
                 {id: 'current-projects', label: 'Текущие проекты'},
                 {id: 'my-responses', label: 'Мои отклики'},
-                {id: 'archived-projects', label: 'Архивные проекты'},
+                {id: 'archived-projects', label: 'Завершенные проекты'},
             ],
             customer: [
                 {id: 'current-projects', label: 'Текущие проекты'},
@@ -45,12 +45,6 @@ function Profile () {
         }
         return tabsMap[group]
     }
-
-    // const tabs = [
-    //     {id: 'tab1', label: 'Текущие проекты'},
-    //     {id: 'tab2', label: 'Отклики'},
-    //     {id: 'tab3', label: 'Архивные проекты'},
-    // ]
 
     const tabs = getTabs(user.role)
 
@@ -86,12 +80,17 @@ function Profile () {
                 </div>
                 <div className="flex justify-between basis-7/8">
                     <div className="flex flex-col mt-2.5 md:mt-5">
-                        <div className="font-bold text-xl md:text-2xl mb-2.5 md:mb-5">
+                        <div className="font-bold text-xl md:text-2xl mb-2.5 md:mb-3">
                             Имя пользователя
                         </div>
                         {user.role === 'student' &&
-                            <div className="text-sm md:text-lg">
-                                Группа пользователя, рейтинг пользователя ⭐
+                            <div className="flex flex-col gap-5">
+                                <div className="text-base text-gray-600">
+                                    Факультет, специальность, группа
+                                </div>
+                                <div className="text-sm md:text-lg">
+                                    Рейтинг пользователя ⭐
+                                </div>
                             </div>
                         }
                         {user.role === 'customer' &&

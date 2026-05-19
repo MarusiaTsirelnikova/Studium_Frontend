@@ -198,17 +198,17 @@ function Task() {
                   {currentTask.description}
                 </div>
                 <div className="font-normal text-base">
-                  <div className="flex items-center gap-15 md:gap-10">
+                  <div className="flex items-center gap-15 md:gap-20">
                     <div className="flex justify-baseline gap-2">
                       <UserProjectCategory category={currentTask.category} />
                       {currentTask.category}
                     </div>
-                    <div className="flex gap-2">
+                    <div title="Сумма баллов, которые получит исполнитель в случае успешного выполнения задачи" className="flex gap-2">
                       <img className='size-8 md:size-10' src={points} alt="" />
                       <div className="">
-                        Награда
+                        Вознаграждение
                         <div className="">
-                          {currentTask.points_reward}
+                          {currentTask.points_reward} баллов
                         </div>
                       </div>
                     </div>
@@ -226,7 +226,7 @@ function Task() {
               <div className="text-lg md:text-xl font-semibold">
                 Стек технологий
                 <div className="text-sm pt-1.25 md:pt-2.5 font-normal">
-                  Список технологий, которые будут полезны при выполнении данной задачи!
+                  Список технологий, которые будут полезны при выполнении данной задачи
                 </div>
                 <div className="flex gap-1.25 md:gap-2 flex-wrap pt-3.25 md:pt-5.25">
                   {currentTask.technologies.map((technology) => (
@@ -234,6 +234,29 @@ function Task() {
                           {technology}
                       </div>
                     ))}
+                </div>
+              </div>
+              <div className="text-lg md:text-xl font-semibold">
+                Срок выполнения
+                <div className="text-sm pt-1.25 md:pt-2.5 font-normal">
+                  Проект необходимо выполнить до <span className='font-bold'>01.01.1999</span>
+                </div>
+              </div>
+              <div className="text-lg md:text-xl font-semibold">
+                Дополнительные материалы
+                <div className="text-sm pt-1.25 md:pt-2.5 font-normal">
+                  Материалы, связанные с данным проектом
+                </div>
+                <div className="flex gap-1.25 md:gap-2 flex-wrap pt-3.25 md:pt-5.25">
+                  <div className="underline cursor-pointer bg-gray-200 px-3 py-1.5 rounded-[50px] text-sm font-normal">
+                    СсылкаНаФайл.1
+                  </div>
+                  <div className="underline cursor-pointer bg-gray-200 px-3 py-1.5 rounded-[50px] text-sm font-normal">
+                    БольшаяСсылкаНаФайл.1
+                  </div>
+                  <div className="underline cursor-pointer bg-gray-200 px-3 py-1.5 rounded-[50px] text-sm font-normal">
+                    СсылкаНаФайлТЗ.1
+                  </div>
                 </div>
               </div>
               {/* <div className={`text-lg md:text-xl font-semibold ${user.role === 'moderator' ? 'hidden' : '' }`}>
@@ -257,7 +280,7 @@ function Task() {
                   Готовы приступить к выполнению задачи?
                 </div>
                 <div className="text-gray-700 text-sm">
-                  Вы можете добавить небольшой текст к своему отклику, который увидит заказчик, или продолжить без него
+                  Вы можете добавить небольшой текст к своему отклику, который увидит модератор, или продолжить без него
                 </div>
                 <textarea rows='7' placeholder='Место для отклика...' className='bg-white w-full resize-none p-1.25 rounded-md outline outline-gray-300 focus:outline-green-700'/>
                 <div className='rounded-md text-white bg-green-700 hover:bg-green-800 active:bg-green-900 w-full py-3.25 md:mt-3.75 font-bold text-base cursor-pointer' onClick={() => setIsModalOpen(true)}>
