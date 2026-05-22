@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useUserStore } from '../store/UserStore'
 import UserProject from '../components/UserProject'
 
-import { useUser } from '../userContext'
-
 function Profile () {
-    const { user } = useUser()
-
     const navigate = useNavigate()
 
-    const project = {
+    const user = useUserStore((state) => state.currentUser)
+    const userData = useUserStore((state) => state.currentUserData)
+
+    const [currentProjects, setCurrentProjects] = useState([])
+    const [futureProjects, setFutureProjects] = useState([])
+    const [moderateProjects, setModerateProjects] = useState([])
+    const [archivedProjects, setArchivedProjects] = useState([])
+
+    const project1 = {
       id: 1,
       title: "Разработка дашборда аналитики продаж",
       description: "Разработать адаптивный веб-интерфейс для отображения ключевых метрик (KPI) отдела продаж. Необходимо реализовать динамические графики на основе библиотеки Chart.js, получающие данные через REST API. Бэкенд должен предоставлять эндпоинты для фильтрации данных по дате (сегодня, неделя, месяц) и категориям товаров. Обязательно наличие авторизации через JWT-токены и ролевой модели (администратор видит всё, менеджер — только свой отдел).",
@@ -21,22 +26,22 @@ function Profile () {
       money_reward: 0
     }
 
-    const [activeTab, setActiveTab] = useState('tab1')
+    const [activeTab, setActiveTab] = useState('current-projects')
 
     const getTabs = (group) => {
         const tabsMap = {
-            student: [
+            3: [
                 {id: 'current-projects', label: 'Текущие проекты'},
                 {id: 'my-responses', label: 'Мои отклики'},
                 {id: 'archived-projects', label: 'Завершенные проекты'},
             ],
-            customer: [
+            2: [
                 {id: 'current-projects', label: 'Текущие проекты'},
                 {id: 'looking-for-executor', label: 'Поиск исполнителя'},
                 {id: 'under-inspection', label: 'На модерации'},
                 {id: 'archived-projects', label: 'Завершенные проекты'},
             ],
-            moderator: [
+            1: [
                 {id: 'current-projects', label: 'Текущие проекты'},
                 {id: 'looking-for-executor', label: 'Поиск исполнителя'},
                 {id: 'wait-for-inspection', label: 'Проекты для модерации'},
@@ -46,22 +51,57 @@ function Profile () {
         return tabsMap[group]
     }
 
-    const tabs = getTabs(user.role)
+    const tabs = getTabs(userData.groups_id[0])
 
     const tabContent = {
-        tab1: (
-            <div className="text-gray-400">
-                
+        'current-projects': (
+            <div className="">
+                {currentProjects.length === 0 ? (
+                    <div className="">
+                        Нет текущих проектов на данный момент
+                    </div>
+                ) : (
+                    <div className="grid 2xl:grid-cols-2 gap-7.5 xl:grid-cols-1">
+                        {moderateProjects.map((project) => (
+                            <UserProject project={project} activeTab={activeTab} />
+                        ))}
+                    </div>
+                )}
             </div>
         ),
-        tab2: (
-            <div className="text-gray-400">
-                
+        'looking-for-executor': (
+            <div className="">
+                {futureProjects.length === 0 ? (
+                    <div className="">
+                        ((()))
+                    </div>
+                ) : (
+                    <div className="grid 2xl:grid-cols-2 gap-7.5 xl:grid-cols-1">
+                        {moderateProjects.map((project) => (
+                            <UserProject project={project} activeTab={activeTab} />
+                        ))}
+                    </div>
+                )}
             </div>
         ),
-        tab3: (
-            <div className="text-gray-400">
-                
+        'wait-for-inspection': (
+            <div className="">
+                {moderateProjects.length === 0 ? (
+                    <div className="">
+                        На данный момент нет проектов, нуждающихся в модерации
+                    </div>
+                ) : (
+                    <div className="grid 2xl:grid-cols-2 gap-7.5 xl:grid-cols-1">
+                        {moderateProjects.map((project) => (
+                            <UserProject project={project} activeTab={activeTab} />
+                        ))}
+                    </div>
+                )}
+            </div>
+        ),
+        'archived-projects': (
+            <div className="">
+
             </div>
         )
     }
@@ -69,7 +109,31 @@ function Profile () {
     useEffect(() => {
         window.scrollTo(0, 0)
 
-        setActiveTab('current-projects');
+        setActiveTab('current-projects')
+
+        async function fetchProjects() {
+            const responseActive = await fetch('http://127.0.0.1:8000/api/project_exchange/active/', {
+                method: 'GET',
+				headers: {
+					'Authorization': `Basic ${user}`
+				}
+            })
+            if (responseActive.ok) {
+                const data = await responseActive.json()
+                setCurrentProjects(data)
+            }
+			const responseModeration = await fetch('http://127.0.0.1:8000/api/project_exchange/moderation/', {
+				method: 'GET',
+				headers: {
+					'Authorization': `Basic ${user}`
+				}
+			})
+			if (responseModeration.ok) {
+				const data = await responseModeration.json()
+				setModerateProjects(data)
+			}
+		}
+        fetchProjects()
     }, [])
 
     return (
@@ -81,9 +145,9 @@ function Profile () {
                 <div className="flex justify-between basis-7/8">
                     <div className="flex flex-col mt-2.5 md:mt-5">
                         <div className="font-bold text-xl md:text-2xl mb-2.5 md:mb-3">
-                            Имя пользователя
+                            {userData.last_name} {userData.first_name} {userData.patronymic}
                         </div>
-                        {user.role === 'student' &&
+                        {userData.groups_id[0] === 3 &&
                             <div className="flex flex-col gap-5">
                                 <div className="text-base text-gray-600">
                                     Факультет, специальность, группа
@@ -93,7 +157,7 @@ function Profile () {
                                 </div>
                             </div>
                         }
-                        {user.role === 'customer' &&
+                        {userData.groups_id[0] === 2 &&
                             <div className="px-4 py-2 rounded-md cursor-pointer text-sm md:text-lg bg-green-700 hover:bg-green-800 active:bg-green-900 text-center text-white mt-5"
                                 onClick={() => navigate('/create-new-task')}>
                                 Создать новую задачу
@@ -125,9 +189,10 @@ function Profile () {
                 <div className="p-4">
                     {tabContent[activeTab]}
                     <div className="grid 2xl:grid-cols-2 gap-7.5 xl:grid-cols-1">
+                        
+                        {/* <UserProject project={project} activeTab={activeTab} />
                         <UserProject project={project} activeTab={activeTab} />
-                        <UserProject project={project} activeTab={activeTab} />
-                        <UserProject project={project} activeTab={activeTab} />
+                        <UserProject project={project} activeTab={activeTab} /> */}
                     </div>
                 </div>
             </div>

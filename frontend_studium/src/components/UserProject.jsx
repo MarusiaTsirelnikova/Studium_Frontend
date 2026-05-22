@@ -1,27 +1,37 @@
 import { useNavigate } from 'react-router-dom'
-import mobile from '../assets/mobile.png'
-import web from '../assets/web.png'
-import database from '../assets/database.png'
+import { useUserStore } from '../store/UserStore'
+import { useTechnologiesStore } from '../store/TechnologiesStore'
+import { useProjectCategoryStore } from '../store/ProjectCategoryStore'
+// import mobile from '../assets/mobile.png'
+// import web from '../assets/web.png'
+// import database from '../assets/database.png'
 import points from '../assets/points-reward.png'
 import money from '../assets/money-reward.png'
 
-import { useUser } from '../userContext'
-
 function UserProjectCategory ({ category }) {
-    switch (category) {
-        case 'Веб-программирование':
-            return <img className='size-8 md:size-10' src={web} alt="" />;
-        case 'Мобильная разработка':
-            return <img className='size-8 md:size-10' src={mobile} alt="" />;
-        case 'Создание и администрирование БД':
-            return <img className='size-8 md:size-10' src={database} alt="" />;
-    }
+    const categories = useProjectCategoryStore((state) => state.categories)
+    const projectCategory = categories.find(item => item.id === category)
+
+    return (
+        <div className="flex justify-baseline text-sm gap-2">
+            <img className='size-8 md:size-10' src={`http://127.0.0.1:8000${projectCategory.icon}`} alt='' />
+            {projectCategory.name}
+        </div>
+    )
+
+    // switch (category) {
+    //     case 'Веб-программирование':
+    //         return <img className='size-8 md:size-10' src={web} alt="" />;
+    //     case 'Мобильная разработка':
+    //         return <img className='size-8 md:size-10' src={mobile} alt="" />;
+    //     case 'Создание и администрирование БД':
+    //         return <img className='size-8 md:size-10' src={database} alt="" />;
+    // }
 }
 
 function UserProjectButton ({ activeTab, project }) {
     const navigate = useNavigate()
-
-    const { user } = useUser()
+    const user = useUserStore((state) => state.currentUserData)
 
     switch(activeTab) {
         case 'current-projects':
@@ -110,30 +120,41 @@ function UserProjectButton ({ activeTab, project }) {
 
 function UserProject ({ project, activeTab }) {
     const navigate = useNavigate()
+
+    const technologies = useTechnologiesStore((state) => state.technologies)
+    const categories = useProjectCategoryStore((state) => state.categories)
+
+    const techList = project.technologies_id.map(technology_id => {
+        const technology = technologies.find(item => item.id === technology_id)
+        return {
+            ...technology_id,
+            technologyName: technology ? technology.name : '',
+        }
+    })
     
     return (
         <div className='outline outline-gray-200 rounded-md max-w-173.5 p-3 md:p-5 text-base flex flex-col'>
             <div className="font-semibold text-base md:text-lg pb-6 cursor-pointer" onClick={() => navigate(`/tasks/${project.id}`)}> 
-                {project.title}
+                {project.name}
             </div>
             {/* <div className="text-xs md:text-sm pb-4 md:pb-6">
                 {project.author}
             </div> */}
             <div className="flex items-center gap-15 md:gap-10 pb-3 md:pb-6">
-                <div className="flex justify-baseline text-sm gap-2">
-                    <UserProjectCategory category={project.category} />
-                    {project.category}
-                </div>
+                    {/* <div className="flex justify-baseline text-sm gap-2"> */}
+                <UserProjectCategory category={project.category_project_id} />
+                    {/* {project.category_project_id}
+                </div> */}
                 <div className="flex gap-2">
                     <img className='size-8 md:size-10' src={points} alt="" />
                     <div className="text-sm">
                         Награда
                         <div className="">
-                            {project.points_reward}
+                            {project.number_of_points}
                         </div>
                     </div>
                 </div>
-                {project.money_reward === 0 && (
+                {project.cash_reward && (
                     <div className="flex gap-2">
                         <img className='size-8 md:size-10' src={money} alt="" />
                         <div className="text-sm">
@@ -146,40 +167,15 @@ function UserProject ({ project, activeTab }) {
                 {project.description}
             </div>
             <div className="flex gap-1.25 flex-wrap pb-3 md:pb-6">
-                {project.technologies.map((technology) => (
+                {techList.map((item) => (
                     <div className="bg-gray-200 px-2.5 py-1.5 rounded-[50px] text-xs">
-                        {technology}
+                        {item.technologyName}
                     </div>
                 ))}
             </div>
 
             <UserProjectButton activeTab={activeTab} project={project.id}/>
 
-            {/* {activeTab === 'tab1' && 
-                <div className="flex gap-3.75 text-sm">
-                    <div className="px-3.5 py-1.25 bg-blue-200 hover:bg-blue-300 cursor-pointer text-nowrap" onClick={() => navigate(`/chats`)}>
-                        Перейти к чату
-                    </div>
-                    <div className="underline px-3.5 py-1.25 hover:font-medium cursor-pointer" onClick={() => navigate(`/tasks/${task.id}`)}>
-                        Посмотреть подробности задачи
-                    </div>
-                </div>
-            }
-            {activeTab === 'tab2' &&
-                <div className="flex gap-3.75">
-                    <div className="px-3.5 py-1.25 bg-blue-200 hover:bg-blue-300 cursor-pointer text-sm" onClick={() => navigate(`/chats`)}>
-                        Посмотреть подробности задачи
-                    </div>
-                </div>
-            }
-            {activeTab === 'tab3' &&
-                <div className="flex gap-3.75">
-                    <div className="px-3.5 py-1.25 bg-blue-200 hover:bg-blue-300 cursor-pointer text-sm" onClick={() => navigate(`/chats`)}>
-                        Посмотреть решение
-                    </div>
-                </div>
-            } */}
-            
         </div>
     )
 }

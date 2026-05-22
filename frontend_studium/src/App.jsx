@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { useUserStore } from './store/UserStore.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
@@ -19,33 +20,61 @@ import './App.css'
 import { UserProvider } from './userContext.jsx'
 
 
+function ProtectedRoute ({ allowedRoles }) {
+  const isAuth = useUserStore((state) => state.isAuth)
+  const user =  useUserStore((state) => state.currentUserData)
+
+  if (!isAuth) {
+    return (
+      <Navigate to='/login' replace />
+    )
+  } 
+  
+  if (!allowedRoles.includes(user?.groups_id[0])) {
+    console.log(user?.groups_id[0])
+    console.log(allowedRoles)
+    return (
+      <Navigate to='/page-not-found' replace />
+    )
+  }
+
+  return <Outlet />
+}
+
 function App() {
 
   return (
     <>
-    <UserProvider>
       <Header />
       <Routes>
-        <Route path='/'/>
         <Route path='/login' element={ <LoginPage /> }/>
-        <Route path='/profile' element={ <Profile /> }/>
-        <Route path='/tasks' element={ <Tasks /> }/>
-        <Route path='/tasks/:taskId' element={ <Task /> }/>
-        <Route path='/tasks/:taskId/responses' element={ <Responses /> }/>
-        <Route path='/chats' element={ <Chats /> }/>
-        <Route path='/chats/:chatId'/>
-        <Route path='/create-new-task' element={ <CreateNewTask type='create' /> }/>
-        <Route path='/moderate-task/:taskId' element={ <CreateNewTask type='moderation' /> }/>
-        <Route path='/tasks/:taskId/edit' element={ <CreateNewTask type='edit' /> }/>
-        <Route path='/tasks/:taskId/edit-users' element={ <EditUsers /> }/>
-        <Route path='/studium-store' element={ <Shop /> }/>
-        <Route path='/order-story' element={ <OrdersPage /> }/>
-        <Route path='/help-us-become-better' element={ <HelpUsBecomBetter /> }/>
-        <Route path='*' element={ <PageNotFound /> }/>
+        <Route path='/page-not-found' element={ <PageNotFound /> }/>
+        <Route element={<ProtectedRoute allowedRoles={[3, 2, 1]} />}>
+          <Route path='/profile' element={ <Profile /> }/>
+          <Route path='/tasks' element={ <Tasks /> }/>
+          <Route path='/tasks/:taskId' element={ <Task /> }/>
+          <Route path='/chats' element={ <Chats /> }/>
+          <Route path='/chats/:chatId'/>
+          <Route path='/help-us-become-better' element={ <HelpUsBecomBetter /> }/>
+          <Route path='*' element={ <PageNotFound /> }/>
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[3]} />}>
+          <Route path='/studium-store' element={ <Shop /> }/>
+          <Route path='/order-story' element={ <OrdersPage /> }/>
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[1, 2]} />}>
+          <Route path='/tasks/:taskId/edit' element={ <CreateNewTask type='edit' /> }/>
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[2]} />}>
+          <Route path='/create-new-task' element={ <CreateNewTask type='create' /> }/>
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[1]} />}>
+          <Route path='/tasks/:taskId/responses' element={ <Responses /> }/>
+          <Route path='/moderate-task/:taskId' element={ <CreateNewTask type='moderate' /> }/>
+          <Route path='/tasks/:taskId/edit-users' element={ <EditUsers /> }/>
+        </Route>
       </Routes>
       <Footer />
-    </UserProvider>
-      
     </>
   )
 }
